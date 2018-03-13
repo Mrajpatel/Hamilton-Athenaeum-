@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Hamilton Athenaeum</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="csvjson.js"></script>
+        <style>
+            body {
+                font-family: "Arial Verdana", sans-serif;
+                background-color: whitesmoke;
+            }
+            #map {
+                height: 500px;
+                width: 100%;
+            }
+            #g1, #g2, #g3{
+                background: linear-gradient(to bottom right, #4377ff, #65cdff);
+                border: none;
+                box-shadow: 2px 3px lightblue;
+            }
+            hr{
+                border: 1px solid gray;
+            }
+            #getDirections{
+                background: linear-gradient(to bottom right, green, greenyellow);
+                box-shadow: 1px 2px palegreen;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <a href="index.html"><div class="media">
+                    <div class="media-left media-middle">
+                        <img src="logo.png" class="media-object" style="width:60px" alt="library logo">
+                    </div>
+                    <div class="media-body">
+                        <h2>Hamilton Athenaeum</h2>
+                    </div>
+                </div>
+            </a>
+            <div id="map"></div>
+
+
+            <div class="container input-group" style="margin-top: 20px;">
+                <input id="libName" type="text" class="form-control" placeholder="Name of Library">
+                <div class="input-group-btn">
+                    <button id="libraryName" class="btn btn-default" onclick="getLibrary()">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="container-fluid" style="margin-top: 30px;">
+                <div class="row">
+                    <div class="col-sm-4" style="border-right: 1px solid #666;">
+                        <h4><strong>Directions</strong></h4>
+                        <p>Get the direction to specific library by selecting the name of Library from the list of libraries</p>
+                        <button style="width: 90%" id='g1' type="button" class="btn btn-info" data-toggle="collapse" data-target="#direction">Get Instructions</button>
+                        <div id="direction" class="collapse" style="margin-top: 10px;">
+                            <p style='font-weight: bold;'>Select the name of library from the list and hit Get Direction button</p>
+                            <b>To: </b>
+                            <p><select id="start" style="width: 60%"></select></p>
+                            <b>From: </b>
+                            <p><select id="end" style="width: 60%"></select></p>
+                            <b>Via: </b>
+                            <p>
+                                <select id="mode" style="width: 60%">
+                                    <option value="TRANSIT">Transit</option>
+                                    <option value="DRIVING">Driving</option>
+                                    <option value="BICYCLING">Bicycle</option>
+                                    <option value="WALKING">Walking</option>
+                                </select>
+                            </p>
+                            <button type="button" class="btn btn-success" id="getDirections">Get Directions</button>
+                        </div>
+                    </div>
+                    <div class="col-sm-4" style="border-right: 1px solid #666;">
+                        <h4><strong>Libraries</strong></h4>
+                        <p>Get the names of library in Hamilton city of Ontario Province in Canada. Click the button below to get the list of libraries.</p>
+                        <button style="width: 90%" id='g2' type="button" class="btn btn-info" data-toggle="collapse" data-target="#list">Library List</button>
+
+                    </div>
+                    <div class="col-sm-4">
+                        <h4><strong>New Library</strong></h4>
+                        <p>Fill up the form and send an email to the designer to add a new library location. The location information may require more than your knowledge.</p>
+                        <button style="width: 90%" id='g3' type="button" class="btn btn-info" data-toggle="collapse" data-target="#form">Enter Information</button>
+                    </div>
+                </div>
+                <hr>
+                <!--Collapse Div Libraries-->
+                <div id="list" class="collapse" style="margin-top: 10px;">
+                    <div class="row">
+                        <div id="names1" class="col-sm-4"></div>
+                        <div id="names2" class="col-sm-4"></div>
+                        <div id="names3" class="col-sm-4"></div>
+                    </div>
+                </div>
+
+                <!--Collapse Div Form-->
+                <div id="form" class="container collapse">
+                    <h3>Missing Library</h3>
+                    <form action='index.html'>
+                        <div class="form-group">
+                            <label for="email">Email address:</label>
+                            <input readonly type="email" class="form-control" id="email" value='raj-pankajkumar.patel@mohawkcollege.ca'>
+                        </div>
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Building SQ FT:</label>
+                            <input type="number" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Holidays:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Circulation:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Ranking:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Radius(km):</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Longitude:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Latitude:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-default"><a href="mailto:raj-pankajkumar.patel@mohawkcollege.ca?Subject=Library%20Informarion" target="_top">Send Mail</a></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script src="main.js" type="text/javascript"></script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHJwEYTMc4tqSolxj8mBuRAtABT9FynNE&callback=intMap">
+        </script>
+    </body>
+</html>

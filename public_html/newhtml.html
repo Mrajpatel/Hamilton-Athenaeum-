@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<!--
+I, Raj Patel, student number 000744572 certify that this material is my original work. No
+ other person's work has been used without due acknowledgement.
+-->
+<html>
+    <head>
+        <title>Geo-Location</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="jquery-3.3.1.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHJwEYTMc4tqSolxj8mBuRAtABT9FynNE"></script>
+        <script src="gmaps.js"></script>
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="convData.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script>
+            var map;
+            var listMarkers = [];                       //list to keep the track of the markers
+            $(document).ready(function () {
+                clearMarkers();             //list of markers to be cleared every time the function is called
+                var latitude = 43.243603;   //default co-ordinates
+                var longitude = -79.889075; //default co-ordinates
+                //creating a map 
+                var map = new GMaps({
+                    div: "#map",
+                    zoom: 10,
+                    lat: latitude,
+                    lng: longitude
+                });
+                //asking for the user to allow location or not
+                GMaps.geolocate({
+                    //if the user hits allow then this function is called
+                    success: function (position) {
+                        map.setCenter(position.coords.latitude, position.coords.longitude);
+                        document.getElementById('coor1').innerHTML = "Latitude: " + position.coords.latitude;
+                        document.getElementById('coor2').innerHTML = "Longitude: " + position.coords.longitude;
+                        //calling the function to set the marker at the current location of the screen
+                        currentLocation(position.coords.latitude, position.coords.longitude);
+                    },
+                    //if the user hits block then this function is called
+                    error: function (error) {
+                        document.getElementById('coor1').innerHTML = "GPS Co-ordinates Unavailable!! Default Values used.";
+                        document.getElementById('coor2').innerHTML = "PERMISSION_DENIED: The location acquisition process failed because the document does not have permission to use Geolocation API.";
+                    }
+                });
+                //function to set the marker at the current location of the screen using co-ordinates
+                function currentLocation(a, b) {
+                    map.addMarker({
+                        lat: a,
+                        lng: b,
+                        animation: google.maps.Animation.BOUNCE,
+                        infoWindow: {
+                            content: '<a href="https://www.google.ca/maps/place/' + a + " " + b + '"><div class="btn btn-link">Current Location</div></a>'
+                        }
+
+                    });
+                }
+                //click event each div on the grid
+                var name = ["Carlisle", "Hamilton", "Binbrook", "Dundas", "Ancaster", "Flamborough", "Stoney Creek"];   //list of all city names
+                //each div click event calls the city function to add markers on the map
+                //each time different integer value is passed to the city function to determine the name of city to look for from the name array
+                document.getElementById("all").onclick = function () {
+                    city("all");
+                };
+                document.getElementById("city1").onclick = function () {
+                    city(0);
+                };
+                document.getElementById("city2").onclick = function () {
+                    var a = 1;
+                    city(a);
+                };
+                document.getElementById("city3").onclick = function () {
+                    city(2);
+                };
+                document.getElementById("city4").onclick = function () {
+                    city(3);
+                };
+                document.getElementById("city5").onclick = function () {
+                    city(4);
+                };
+                document.getElementById("city6").onclick = function () {
+                    city(5);
+                };
+                document.getElementById("city7").onclick = function () {
+                    city(6);
+                };
+
+                /**
+                 * function to add marker on the screen as per the user's selection
+                 * @param {int} i - to loop through the json object
+                 * @returns {undefined} - adds markers on the screen
+                 */
+                function dropMarker(i) {
+                    listMarkers.push(map.addMarker({
+                        lat: listRecs[i].latitude,
+                        lng: listRecs[i].longtitude,
+                        animation: google.maps.Animation.DROP,
+                        infoWindow: {
+                            content: '<div class="container" style="width:290px;;">\n\
+                                    <div style="border-radius: 5px; border: 2px solid black;">\n\
+                                    <div>' +
+                                    '<img style="float: right; margin-top:10px; margin-right:10px;" src="js/icons8-swimming-filled-50.png" class="img-thumbnail" alt="Recreation Icon">'
+                                    + '<p>' + listRecs[i].name + '<br>' +
+                                    listRecs[i].address + '<br>' +
+                                    listRecs[i].city + '<br>' +
+                                    listRecs[i].phone
+                                    + '<a href="https://www.google.ca/maps/place/' + listRecs[i].address + " " + listRecs[i].city + '">\n\
+                                    <div class="btn btn-link">Google Maps</div></a>' +
+                                    '<a href="http://maps.googleapis.com/maps/api/geocode/xml?address=' + listRecs[i].address + " " + listRecs[i].city + '">\n\
+                                    <div class="btn btn-link">Lat/Long</div></a>' +
+                                    '</p></div></div>',
+                            size: new google.maps.Size(150, 5)
+                        }
+                    }));
+                }
+
+                /**
+                 * calls the dropMarker function to add markers on the screen after determining of the markers are of all cities or specific
+                 * @param {type} a - loop through the list of cities
+                 * @returns {undefined}
+                 */
+                function city(a) {
+                    //clear markers every time the city div is hit
+                    clearMarkers();
+                    $('#data').html("");    //resetting all the data
+                    $("#data").hide();
+                    //if the selection is the all city selection
+                    if (a !== "all") {
+                        for (var i = 0; i < listRecs.length; i++) {
+                            if (listRecs[i].city === name[a]) {
+                                dropMarker(i);
+                                $('#data').append(JSON.stringify(listRecs[i], null, '\t')); //adding the json data to the div 
+                            }
+                        }
+                    }   //if the selection is not specific city 
+                    else {
+                        for (var i = 0; i < listRecs.length; i++) {
+                            dropMarker(i);
+                            $('#data').append(JSON.stringify(listRecs[i], null, '\t'));     //adding the json data to the div
+                        }
+                    }
+                }
+
+                /**
+                 * clear all the markers that are added to the list while putting them on screen
+                 * @returns {undefined}
+                 */
+                function clearMarkers() {
+                    for (var i = 0; i < listMarkers.length; i++) {
+                        listMarkers[i].setMap(null);
+                    }
+                    listMarkers = [];
+                }
+
+                //each time the button is clicked the json data will be visible
+                $("#jsonData").click(function () {
+                    $("#data").fadeIn();
+                });
+
+            });
+        </script>
+        <style>
+            #map {
+                height:600px;
+                background-color:lightblue;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="btn-group">
+                <div id="all" class="btn btn-success">All</div>
+                <div id="city1" class="btn btn-primary">Carlisle</div>
+                <div id="city2" class="btn btn-primary">Hamilton</div>
+                <div id="city3" class="btn btn-primary">Binbrook</div>
+                <div id="city4" class="btn btn-primary">Dundas</div>
+                <div id="city5" class="btn btn-primary">Ancaster</div>
+                <div id="city6" class="btn btn-primary">Flamborough</div>
+                <div id="city7" class="btn btn-primary">Stoney Creek</div>
+            </div>
+            <div id="map"></div>
+            <div id="currentLocation">
+                <div id="coor1" class="col-sm-4 "></div>
+                <div id="location1" class="col-sm-4"></div>
+
+                <div id="coor2" class="col-sm-4"></div>
+                <div id="location2" class="col-sm-4"></div>
+            </div>
+            <button id="jsonData" class="btn btn-primary">Show JSON Data</button>
+            <div><pre id="data"></pre></div>
+        </div>
+    </body>
+</html>
