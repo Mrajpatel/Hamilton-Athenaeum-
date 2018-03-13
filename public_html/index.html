@@ -50,7 +50,7 @@ and open the template in the editor.
             <div id="map"></div>
 
 
-            <div class="container input-group" style="margin-top: 20px;">
+            <div id="123" class="container input-group" style="margin-top: 20px;">
                 <input id="libName" type="text" class="form-control" placeholder="Name of Library">
                 <div class="input-group-btn">
                     <button id="libraryName" class="btn btn-default" onclick="getLibrary()">
@@ -61,9 +61,9 @@ and open the template in the editor.
 
             <div class="container-fluid" style="margin-top: 30px;">
                 <div class="row">
-                    <div class="col-sm-4" style="border-right: 1px solid #666;">
-                        <h4><strong>Directions</strong></h4>
-                        <p>Get the direction to specific library by selecting the name of Library from the list of libraries</p>
+                    <div class="col-sm-4" style="border-right: 1px solid #666; font-size: 14pt;">
+                        <h3><strong>Directions</strong></h3>
+                        <p>Get the direction to specific library by selecting the name of Library from the list of libraries. Few steps and you will be able to see your destination</p>
                         <button style="width: 90%" id='g1' type="button" class="btn btn-info" data-toggle="collapse" data-target="#direction">Get Instructions</button>
                         <div id="direction" class="collapse" style="margin-top: 10px;">
                             <p style='font-weight: bold;'>Select the name of library from the list and hit Get Direction button</p>
@@ -83,14 +83,14 @@ and open the template in the editor.
                             <button type="button" class="btn btn-success" id="getDirections">Get Directions</button>
                         </div>
                     </div>
-                    <div class="col-sm-4" style="border-right: 1px solid #666;">
-                        <h4><strong>Libraries</strong></h4>
+                    <div class="col-sm-4" style="border-right: 1px solid #666; font-size: 14pt;">
+                        <h3><strong>Libraries</strong></h3>
                         <p>Get the names of library in Hamilton city of Ontario Province in Canada. Click the button below to get the list of libraries.</p>
                         <button style="width: 90%" id='g2' type="button" class="btn btn-info" data-toggle="collapse" data-target="#list">Library List</button>
 
                     </div>
-                    <div class="col-sm-4">
-                        <h4><strong>New Library</strong></h4>
+                    <div class="col-sm-4" style=" font-size: 14pt;">
+                        <h3><strong>New Library</strong></h3>
                         <p>Fill up the form and send an email to the designer to add a new library location. The location information may require more than your knowledge.</p>
                         <button style="width: 90%" id='g3' type="button" class="btn btn-info" data-toggle="collapse" data-target="#form">Enter Information</button>
                     </div>
